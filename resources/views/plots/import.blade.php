@@ -175,7 +175,6 @@
                                     <th class="px-3 py-2 text-left font-semibold text-gray-600 border-r">Notes</th>
                                     <th class="px-3 py-2 text-left font-semibold text-gray-600 border-r">X</th>
                                     <th class="px-3 py-2 text-left font-semibold text-gray-600 border-r">Y</th>
-                                    <th class="px-3 py-2 text-left font-semibold text-gray-600">Sort Order</th>
                                 </tr>
                             </thead>
 
@@ -191,10 +190,9 @@
                                     <td class="px-3 py-2 border-r">PREMIUM</td>
                                     <td class="px-3 py-2 border-r">Yes</td>
                                     <td class="px-3 py-2 border-r">No</td>
-                                    <td class="px-3 py-2 border-r">Polygon point 1</td>
-                                    <td class="px-3 py-2 border-r">10.5</td>
-                                    <td class="px-3 py-2 border-r">20.5</td>
-                                    <td class="px-3 py-2">1</td>
+                                    <td class="px-3 py-2 border-r">Note point 1</td>
+                                    <td class="px-3 py-2 border-r">10.5;30.2;50.1</td>
+                                    <td class="px-3 py-2 border-r">20.5;40.8;60.9</td>
                                 </tr>
 
                                 <tr class="hover:bg-gray-100">
@@ -208,10 +206,9 @@
                                     <td class="px-3 py-2 border-r">PREMIUM</td>
                                     <td class="px-3 py-2 border-r">Yes</td>
                                     <td class="px-3 py-2 border-r">No</td>
-                                    <td class="px-3 py-2 border-r">Polygon point 2</td>
-                                    <td class="px-3 py-2 border-r">30.2</td>
-                                    <td class="px-3 py-2 border-r">40.8</td>
-                                    <td class="px-3 py-2">2</td>
+                                    <td class="px-3 py-2 border-r">Note point 2</td>
+                                    <td class="px-3 py-2 border-r">20.5;40.8;60.9</td>
+                                    <td class="px-3 py-2 border-r">23.5;45.8;68.9</td>
                                 </tr>
 
                                 <tr class="hover:bg-gray-100">
@@ -225,10 +222,9 @@
                                     <td class="px-3 py-2 border-r">STANDARD</td>
                                     <td class="px-3 py-2 border-r">No</td>
                                     <td class="px-3 py-2 border-r">Yes</td>
-                                    <td class="px-3 py-2 border-r">Polygon point 1</td>
-                                    <td class="px-3 py-2 border-r">11</td>
-                                    <td class="px-3 py-2 border-r">22</td>
-                                    <td class="px-3 py-2">1</td>
+                                    <td class="px-3 py-2 border-r">Note point 1</td>
+                                    <td class="px-3 py-2 border-r">10.5;34.8;40.9</td>
+                                    <td class="px-3 py-2 border-r">28.5;48.8;68.9</td>
                                 </tr>
                             </tbody>
 
