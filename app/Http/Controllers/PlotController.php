@@ -790,4 +790,25 @@ class PlotController extends Controller
             }
         }
     }
+
+    // ─────────────────────────────────────────────
+    // Get all plots ( WITHOUT THE LOGIN OR AUTHENTICATION...)
+    // ─────────────────────────────────────────────
+    public function getPlotsJson()
+    {
+        return response()->json(
+            Plot::all()
+        );
+    }
+
+    // ─────────────────────────────────────────────
+    //  Get all plot points ( WITHOUT THE LOGIN OR AUTHENTICATION... )
+    // ─────────────────────────────────────────────
+    public function getPlotPointsJson()
+    {
+        return response()->json(
+            PlotPoint::all()
+        );
+    }
+
 }
