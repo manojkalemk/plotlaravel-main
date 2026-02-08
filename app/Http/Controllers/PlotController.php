@@ -382,14 +382,6 @@ class PlotController extends Controller
      */
     public function downloadTemplate()
     {
-        // Create CSV template if PhpSpreadsheet not installed
-        // $templateData = [
-        //     ['Plot ID', 'Plot Type', 'Area', 'FSI', 'RL', 'Road', 'Status', 'Category', 'Corner', 'Garden', 'Notes'],
-        //     ['Plot-101', 'Land parcel', '5035.46', '1.1', 'RL 150.5', '12MTR', 'available', 'PREMIUM', 'Yes', 'No', 'Sample plot notes'],
-        //     ['Plot-102', 'Residential', '2500.00', '1.2', '', '15 MTR', 'booked', 'STANDARD', 'No', 'Yes', ''],
-        //     ['Plot-103', 'Commercial', '10000.00', '1.5', 'RL 200.0', '24MTR', 'available', 'PREMIUM', 'Yes', 'No', 'Corner commercial plot'],
-        // ];
-
         $templateData = [
             [
                 'Plot ID',
@@ -404,13 +396,76 @@ class PlotController extends Controller
                 'Garden',
                 'Notes',
                 'X',
-                'Y',
-                'Sort Order'
+                'Y'
             ],
-            ['Plot-101', 'Land parcel', '5035.46', '1.1', 'RL 150.5', '12MTR', 'available', 'PREMIUM', 'Yes', 'No', 'Sample', 10.5, 20.5, 1],
-            ['Plot-101', '', '', '', '', '', '', '', '', '', '', 30.2, 40.8, 2],
-            ['Plot-101', '', '', '', '', '', '', '', '', '', '', 50.1, 60.9, 3],
-            ['Plot-102', 'Residential', '2500', '1.2', '', '15MTR', 'booked', 'STANDARD', 'No', 'Yes', '', 11, 22, 1],
+
+            // 1) Circle (approx using multiple points)
+            [
+                'Plot-201',
+                'Land parcel',
+                '3140',
+                '1.1',
+                'RL 100.0',
+                '18MTR',
+                'available',
+                'PREMIUM',
+                'No',
+                'No',
+                'Building like shape',
+                '50;60;70;60;50;40;30;40',
+                '40;50;40;30;20;30;40;50'
+            ],
+
+            // 2) Triangle
+            [
+                'Plot-202',
+                'Residential',
+                '1800',
+                '1.0',
+                'RL 110.0',
+                '12MTR',
+                'available',
+                'STANDARD',
+                'Yes',
+                'No',
+                'Triangle shape',
+                '10;40;25',
+                '10;10;40'
+            ],
+
+            // 3) Square
+            [
+                'Plot-203',
+                'Residential',
+                '1600',
+                '1.0',
+                'RL 115.0',
+                '15MTR',
+                'available',
+                'STANDARD',
+                'No',
+                'Yes',
+                'Square shape',
+                '10;40;40;10',
+                '10;10;40;40'
+            ],
+
+            // 4) Irregular / real plot-like shape
+            [
+                'Plot-204',
+                'Commercial',
+                '5200',
+                '1.5',
+                'RL 130.0',
+                '24MTR',
+                'under_review',
+                'PREMIUM',
+                'Yes',
+                'Yes',
+                'Irregular plot shape',
+                '5;20;45;60;55;30',
+                '10;5;15;35;55;45'
+            ],
         ];
 
         // Create CSV content
@@ -429,6 +484,7 @@ class PlotController extends Controller
             'Content-Disposition' => 'attachment; filename="plot-import-template.csv"',
         ])->deleteFileAfterSend(true);
     }
+
     /**
      * Simple CSV import without PhpSpreadsheet
      */
@@ -590,78 +646,19 @@ class PlotController extends Controller
     /**
      * Import single plot row
      */
-    // private function importPlotRow($row, &$successCount, &$duplicateCount, &$errorRows)
-    // {
-    //     // Skip empty rows
-    //     if (empty(array_filter($row))) {
-    //         return;
-    //     }
-
-    //     // Extract data from row (adjust indexes as per your template)
-    //     $plotId = $row[0] ?? 'PLOT-' . time() . '-' . $successCount;
-    //     $plotType = $row[1] ?? 'Land parcel';
-    //     $area = floatval($row[2] ?? 0);
-    //     $fsi = floatval($row[3] ?? 1.1);
-    //     $rl = $row[4] ?? null;
-    //     $road = $row[5] ?? '12MTR';
-    //     $status = $row[6] ?? 'available';
-    //     $category = $row[7] ?? 'STANDARD';
-    //     $corner = isset($row[8]) ? (strtolower($row[8]) === 'yes') : false;
-    //     $garden = isset($row[9]) ? (strtolower($row[9]) === 'yes') : false;
-    //     $notes = $row[10] ?? null;
-
-    //     // Validate required fields
-    //     if (empty($plotId)) {
-    //         throw new \Exception('Plot ID is required');
-    //     }
-
-    //     if ($area <= 0) {
-    //         throw new \Exception('Area must be greater than 0');
-    //     }
-
-    //     if ($fsi <= 0) {
-    //         throw new \Exception('FSI must be greater than 0');
-    //     }
-
-    //     // Check for duplicate plot ID
-    //     $existingPlot = Plot::where('plot_id', $plotId)->first();
-    //     if ($existingPlot) {
-    //         $duplicateCount++;
-    //         throw new \Exception("Plot ID '$plotId' already exists");
-    //     }
-
-    //     // Create plot
-    //     Plot::create([
-    //         'plot_id' => $plotId,
-    //         'plot_type' => $plotType,
-    //         'area' => $area,
-    //         'fsi' => $fsi,
-    //         'permissible_area' => $area * $fsi,
-    //         'rl' => $rl,
-    //         'road' => $road,
-    //         'status' => $status,
-    //         'category' => $category,
-    //         'corner' => $corner,
-    //         'garden' => $garden,
-    //         'notes' => $notes,
-    //     ]);
-
-    //     $successCount++;
-    // }
 
     private function importPlotRow(array $row, &$successCount, &$duplicateCount, array &$errorRows)
     {
-        // Skip empty rows
         if (empty(array_filter($row))) {
             return;
         }
 
         try {
-            DB::transaction(function () use ($row, &$successCount, &$duplicateCount) {
+            DB::transaction(function () use ($row, &$successCount) {
 
-                // Column mapping (FIXED HEADERS)
+                // Column mapping 
                 [
-                    $plotCode,   // 0 Plot ID
+                    $plotCode,   // 0
                     $plotType,   // 1
                     $area,       // 2
                     $fsi,        // 3
@@ -672,12 +669,10 @@ class PlotController extends Controller
                     $corner,     // 8
                     $garden,     // 9
                     $notes,      // 10
-                    $x,          // 11
-                    $y,          // 12
-                    $sortOrder   // 13
-                ] = array_pad($row, 14, null);
+                    $xRaw,       // 11 
+                    $yRaw        // 12 
+                ] = array_pad($row, 13, null);
 
-                // ---------- VALIDATIONS ----------
                 if (!$plotCode) {
                     throw new \Exception('Plot ID is required');
                 }
@@ -690,12 +685,9 @@ class PlotController extends Controller
                     throw new \Exception("Invalid FSI for Plot ID {$plotCode}");
                 }
 
-                // ---------- CREATE / FETCH PLOT ----------
-                $plot = Plot::where('plot_id', trim($plotCode))->first();
-
-                if (!$plot) {
-                    $plot = Plot::create([
-                        'plot_id' => trim($plotCode),
+                $plot = Plot::firstOrCreate(
+                    ['plot_id' => trim($plotCode)],
+                    [
                         'plot_type' => $plotType ?? 'Land parcel',
                         'area' => (float) ($area ?? 0),
                         'fsi' => (float) ($fsi ?? 1.1),
@@ -707,30 +699,41 @@ class PlotController extends Controller
                         'corner' => strtolower($corner ?? '') === 'yes',
                         'garden' => strtolower($garden ?? '') === 'yes',
                         'notes' => $notes,
-                    ]);
-                }
+                    ]
+                );
 
-                // ---------- INSERT PLOT POINT ----------
-                if ($x !== null && $y !== null && $x !== '' && $y !== '') {
+                if ($xRaw !== null && $yRaw !== null && trim($xRaw) !== '' && trim($yRaw) !== '') {
 
-                    if (!is_numeric($x) || !is_numeric($y)) {
-                        throw new \Exception("Invalid X/Y coordinates for Plot ID {$plotCode}");
+                    $xValues = array_map('trim', explode(';', $xRaw));
+                    $yValues = array_map('trim', explode(';', $yRaw));
+
+                    if (count($xValues) !== count($yValues)) {
+                        throw new \Exception(
+                            "X and Y coordinate count mismatch for Plot ID {$plotCode}"
+                        );
                     }
 
-                    PlotPoint::create([
-                        'plot_id' => $plot->id,   // FK
-                        'x' => (float) $x,
-                        'y' => (float) $y,
-                        'sort_order' => (int) ($sortOrder ?? 0),
-                    ]);
+                    foreach ($xValues as $i => $x) {
+                        $y = $yValues[$i];
+
+                        if (!is_numeric($x) || !is_numeric($y)) {
+                            throw new \Exception(
+                                "Invalid coordinate value for Plot ID {$plotCode}"
+                            );
+                        }
+
+                        PlotPoint::create([
+                            'plot_id' => $plot->id,
+                            'x' => (float) $x,
+                            'y' => (float) $y,
+                            'sort_order' => $i + 1,
+                        ]);
+                    }
                 }
 
                 $successCount++;
             });
         } catch (\Exception $e) {
-            if (str_contains($e->getMessage(), 'already exists')) {
-                $duplicateCount++;
-            }
             $errorRows[] = $e->getMessage();
         }
     }
